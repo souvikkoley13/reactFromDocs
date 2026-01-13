@@ -21,6 +21,14 @@ function Board({isX, square, onMove}){
     onMove(nextSquares);
   }
 
+  function boardDesign() {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        
+      }
+      
+    }
+  }
   const winner = findWinner(square);
   let status;
     
