@@ -2,18 +2,13 @@ import { useState } from 'react'
 import './App.css'
 
 function Box({value, onSquareClick}){
-  
   return(
     <button className='box' onClick={onSquareClick}>{value}</button>
   )
 }
 
-function Board(){
-
-  const [square, setSquare] = useState(Array(9).fill(null));
-  const [isX, setX] = useState(true);
-  
-
+function Board({isX, square, onMove}){
+ 
   function handleClick(i){
 
     if(square[i] || findWinner(square)){
@@ -21,10 +16,9 @@ function Board(){
     }
 
     const nextSquares = square.slice();
-
+    
     nextSquares[i] = isX? "X": "O";
-    setSquare(nextSquares);
-    setX(!isX);
+    onMove(nextSquares);
   }
 
   const winner = findWinner(square);
@@ -62,6 +56,56 @@ function Board(){
   )
 }
 
+function Game() {
+  
+  const [isX, setX] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquare = history[currentMove];
+
+  function handleMove(nextSquares){
+    const nextHistory = [...history.slice(0,currentMove+1),nextSquares]
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length-1)
+    setX(!isX);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    setX(nextMove % 2 === 0);
+  }
+
+  let moveCount;
+
+  const moves = history.map((square,move) => {
+    let description;
+    moveCount = move
+    if(move > 0){
+      description = "jump to move #" + move;
+    } else {
+      description = "Jump to start";
+    }
+    return(
+        <li key = {move} >
+          <button onClick={() => jumpTo(move)}>{description}</button>
+        </li>
+    )
+  }) 
+
+  return(
+    <>
+      <div className='board'>
+        <Board isX = {isX} square = {currentSquare} onMove = {handleMove}/>
+      </div>
+      <div>
+        <h4>past</h4>
+        <ul>{moves}</ul>
+        You are at move #{moveCount+1}
+      </div>
+    </>
+  )
+}
+
 function findWinner(square) {
   const winningLines = [
     [0, 1, 2],
@@ -86,8 +130,8 @@ function App() {
   
   return (
     <>
-      <div className='board'>
-        <Board />
+      <div className='game'>
+        <Game />
       </div>
     </>
   )
