@@ -21,14 +21,20 @@ function Board({isX, square, onMove}){
     onMove(nextSquares);
   }
 
-  function boardDesign() {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        
-      }
-      
+  const rows = []
+  for (let i = 0; i < 3; i++) {
+    let boxes = [];
+    for (let j = 0; j < 3; j++) {
+      let index = i * 3 + j 
+      boxes.push(<Box value = {square[index]} onSquareClick={() => handleClick(index)}/>)
     }
+    rows.push(
+      <div key = {i} className='boardRow'>
+      {boxes}
+      </div>
+    ) 
   }
+  
   const winner = findWinner(square);
   let status;
     
@@ -43,23 +49,7 @@ function Board({isX, square, onMove}){
       <div>
         {status}
       </div>
-      <div className='boardRow'>
-        <Box value = {square[0]} onSquareClick={() => handleClick(0)}/>
-        <Box value = {square[1]} onSquareClick={() => handleClick(1)}/>
-        <Box value = {square[2]} onSquareClick={() => handleClick(2)}/>
-      </div>
-
-      <div className='boardRow'>
-        <Box value = {square[3]} onSquareClick={() => handleClick(3)}/>
-        <Box value = {square[4]} onSquareClick={() => handleClick(4)}/>
-        <Box value = {square[5]} onSquareClick={() => handleClick(5)}/>
-      </div>
-
-      <div className='boardRow'>
-        <Box value = {square[6]} onSquareClick={() => handleClick(6)}/>
-        <Box value = {square[7]} onSquareClick={() => handleClick(7)}/>
-        <Box value = {square[8]} onSquareClick={() => handleClick(8)}/>
-      </div>
+      {rows}
     </>
   )
 }
