@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { use } from 'react';
 
 function Box({value, onSquareClick}){
   return(
@@ -60,6 +61,7 @@ function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const currentSquare = history[currentMove];
+  let tempMove;
 
   function handleMove(nextSquares){
     const nextHistory = [...history.slice(0,currentMove+1),nextSquares]
@@ -74,19 +76,39 @@ function Game() {
   }
 
   let moveCount;
+  const [ascending, setAscending] = useState(true)
 
+  function toggle() {
+    
+    if(ascending){
+      history.reverse();
+    } else if (!ascending) {
+      history.reverse();
+    } 
+    setAscending(!ascending);
+    
+  }
+  
+  tempMove = history.length - 1;
   const moves = history.map((square,move) => {
     let description;
+    let move2;
     moveCount = move
-    if(move > 0){
-      description = "jump to move #" + move;
+    if (!ascending) {
+      move2 = Math.abs(tempMove-move)
+    } else {
+      move2 = move
+    }
+
+    if(move2 > 0){
+      description = "jump to move #" + move2;
     } else {
       description = "Jump to start";
     }
     return(
-        <li key = {move} >
+        <div key = {move} >
           <button onClick={() => jumpTo(move)}>{description}</button>
-        </li>
+        </div>
     )
   }) 
 
@@ -97,7 +119,8 @@ function Game() {
       </div>
       <div>
         <h4>past</h4>
-        <ul>{moves}</ul>
+        <button onClick={toggle}>toggle</button>
+        {moves}
         You are at move #{moveCount+1}
       </div>
     </>
