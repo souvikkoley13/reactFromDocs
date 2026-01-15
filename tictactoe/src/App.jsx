@@ -2,14 +2,18 @@ import { useState } from 'react'
 import './App.css'
 import { use } from 'react';
 
-function Box({value, onSquareClick}){
+function Box({key, className, value, onSquareClick}){
   return(
-    <button className='box' onClick={onSquareClick}>{value}</button>
+    <button key = {key} className={`box ${className}`} onClick={onSquareClick}>{value}</button>
   )
 }
 
 function Board({isX, square, onMove}){
- 
+  
+  const winInfo = findWinner(square);
+  const winner = winInfo? winInfo.win : null;
+  const lines = winInfo? winInfo.line : [];
+
   function handleClick(i){
 
     if(square[i] || findWinner(square)){
@@ -26,8 +30,11 @@ function Board({isX, square, onMove}){
   for (let i = 0; i < 3; i++) {
     let boxes = [];
     for (let j = 0; j < 3; j++) {
+
       let index = i * 3 + j 
-      boxes.push(<Box value = {square[index]} onSquareClick={() => handleClick(index)}/>)
+
+      const winBox = lines.includes(index)
+      boxes.push(<Box key = {index} className = {`box${index} ${winBox ? "winner-glow" : ""}`} value = {square[index]} onSquareClick={() => handleClick(index)}/>)
     }
     rows.push(
       <div key = {i} className='boardRow'>
@@ -36,7 +43,7 @@ function Board({isX, square, onMove}){
     ) 
   }
   
-  const winner = findWinner(square);
+  
   let status;
     
   if (winner) {
@@ -141,7 +148,7 @@ function findWinner(square) {
   for (let i = 0; i < winningLines.length; i++) {
     const [a, b, c] = winningLines[i];
     if (square[a] && square[a] === square[b] && square[a] === square[c]) {
-      return square[a];
+      return {win: square[a], line : [a, b, c]};
     }
   }
   return null;

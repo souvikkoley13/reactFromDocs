@@ -16,3 +16,7 @@
     width: 80px;
     height: 80px;
 }
+
+.winner-glow{
+    background-color: lime;
+}
