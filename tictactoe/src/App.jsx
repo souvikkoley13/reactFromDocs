@@ -23,7 +23,7 @@ function Board({isX, square, onMove}){
     const nextSquares = square.slice();
     
     nextSquares[i] = isX? "X": "O";
-    onMove(nextSquares);
+    onMove(nextSquares,i);
   }
 
   const rows = []
@@ -69,9 +69,12 @@ function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const currentSquare = history[currentMove];
   let tempMove;
-
-  function handleMove(nextSquares){
+  const [location, setLocation] = useState([null])
+  function handleMove(nextSquares,index){
+    let row = Math.floor(index/3);
+    let col = index % 3;
     const nextHistory = [...history.slice(0,currentMove+1),nextSquares]
+    setLocation([...location.slice(0,currentMove+1),{row,col}])
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length-1)
     setX(!isX);
@@ -100,6 +103,7 @@ function Game() {
   const moves = history.map((square,move) => {
     let description;
     let move2;
+    let position = location[move];
     moveCount = move
     if (!ascending) {
       move2 = Math.abs(tempMove-move)
@@ -108,7 +112,7 @@ function Game() {
     }
 
     if(move2 > 0){
-      description = "jump to move #" + move2;
+      description = "jump to move #" + move2 + " "+ position.row + "," + position.col;
     } else {
       description = "Jump to start";
     }
