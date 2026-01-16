@@ -58,11 +58,11 @@ function Menu({unavailAllow, searchWord}) {
 
   return (
     <>
-      <div>
+      <div className='fruits'>
       <h4>Fruits</h4>
       {fruits}
       </div>
-      <div>
+      <div className='vegis'>
       <h4>Vegetables</h4>
       {vegis}
       </div>
@@ -77,39 +77,42 @@ function App() {
   const [searchWord, setSearchWord] = useState('');
   return (
     <>
-      <div className="searchBar">
-        <input 
-          type="text" 
-          placeholder='Search...'
-          value={searchWord}
-          onChange={(e) => setSearchWord(e.target.value)} 
-        />
-      </div>
-      
-      <div className="checkBox">
-        <input 
-          type="checkbox" 
-          name="Only show products in stock" 
-          checked = {!unavailAllow}
-          id="check" 
-          onChange={()=>{
-            setUnavailAllow((original) => !original)
-          }}
-        />
-        <label for="check">Only show products in stock</label>
-      </div>
+      <div className="mainBody">
+        <div className="searchBar">
+          <input 
+            type="text" 
+            placeholder='Search...'
+            value={searchWord}
+            onChange={(e) => setSearchWord(e.target.value)} 
+          />
+        </div>
+        
+        <div className="checkBox">
+          <input 
+            type="checkbox" 
+            name="Only show products in stock" 
+            checked = {!unavailAllow}
+            id="check" 
+            onChange={()=>{
+              setUnavailAllow((original) => !original)
+            }}
+          />
+          <label for="check">Only show products in stock</label>
+        </div>
 
-      <div className="menu">
-        <div className="head">
+        <div className="menu">
+          <div className="head">
+            <table>
+              <th>Name</th>
+              <th>Price</th>
+            </table>
+          </div>
           <table>
-            <th>Name</th>
-            <th>Price</th>
+            < Menu unavailAllow = {unavailAllow} searchWord ={searchWord}/>
           </table>
         </div>
-        <table>
-          < Menu unavailAllow = {unavailAllow} searchWord ={searchWord}/>
-        </table>
       </div>
+      
     </>
   )
 }

@@ -1,3 +1,11 @@
+*{
+  width: 188px;
+}
+.mainBody{
+  background-color: rgb(184, 218, 206);
+  height: 70vh;
+}
+
 th{
   padding: 5px 20px;
 }
@@ -8,8 +16,24 @@ td{
 
 .red{
   color: red;
+  border: 1px solid black;
 }
 
 h4{
   text-align: center;
+}
+.vegis{
+  background-color: greenyellow;
+}
+.fruits{
+  background-color: rgb(231, 135, 135);
+}
+.checkBox {
+  display: flex;
+  background-color: aqua;  
+  font-size: smaller;
+}
+
+.searchBar input{
+  background-color: aqua;
 }
